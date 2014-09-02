@@ -16,6 +16,10 @@
     "passport-local": "~1.0.0",
     "mongoose": "~3.8.15",
     "passport-local-mongoose": "~0.3.0",
-    "lodash": "~2.4.1"
+    "lodash": "~2.4.1",
+    "errorhandler": "~1.1.1",
+    "moment": "~2.8.2",
+    "agenda": "~0.6.17",
+    "async": "~0.9.0"
   }
 }

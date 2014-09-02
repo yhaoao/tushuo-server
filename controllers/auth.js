@@ -3,19 +3,28 @@ var User = require('../models/user');
 var _ = require('lodash');
 
 exports.register = function(req, res) {
+	var username = req.body.username;
+	var email = req.body.email;
+	var birthday = req.body.birthday;
+	var gender = req.body.gender;
+	var avatar = (gender === 'male') ? 'img/male.gif' : '/img/female.gif';
+
 	User.register(new User({
-		username: req.body.username,
-		email: req.body.email
+		username: username,
+		email: email,
+		gender: gender,
+		birthday: birthday,
+		avatar: avatar
 	}), req.body.password, function(err, user) {
 		if (err) {
 			return res.json({
 				err: 1,
-				msg:'邮箱已存在'
+				msg: '邮箱已存在'
 			});
 		}
 
 		res.cookie('connect.id', user.hash, {
-			maxAge: 90000000,
+			maxAge: 90000000000,
 			httpOnly: true
 		});
 		user = _.omit(user.toJSON(), '__v', 'salt', 'hash');
@@ -30,7 +39,7 @@ exports.register = function(req, res) {
 exports.login = function(req, res) {
 	if (req.user) {
 		res.cookie('connect.id', req.user.hash, {
-			maxAge: 90000000,
+			maxAge: 90000000000,
 			httpOnly: true
 		});
 		var user = _.omit(req.user.toJSON(), '__v', 'salt', 'hash');
@@ -56,4 +65,3 @@ exports.logout = function(req, res) {
 		err: 0
 	});
 };
-
