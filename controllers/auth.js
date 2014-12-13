@@ -7,7 +7,7 @@ exports.register = function(req, res) {
 	var email = req.body.email;
 	var birthday = req.body.birthday;
 	var gender = req.body.gender;
-	var avatar = (gender === 'male') ? 'img/male.gif' : '/img/female.gif';
+	var avatar = (gender === 'male') ? 'img/male.gif' : 'img/female.gif';
 
 	User.register(new User({
 		username: username,

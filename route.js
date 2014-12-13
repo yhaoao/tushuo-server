@@ -6,6 +6,7 @@ var user = require('./controllers/user');
 var post = require('./controllers/post');
 var feedback = require('./controllers/feedback');
 var message = require('./controllers/message');
+var qiniu = require('./helper/qiniu');
 
 
 module.exports = function(app) {
@@ -32,4 +33,7 @@ module.exports = function(app) {
 	//消息
 	app.post('/message', user.user, message.addMessage);
 	app.get('/message', user.user, message.getMessage);
+
+	//七牛
+	app.get('/get_token',qiniu.getToken);
 };

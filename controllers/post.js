@@ -3,21 +3,22 @@ var Post = require('../models/post');
 
 exports.addPost = function(req, res, next) {
 	var post = {};
+	//var longitude = req.user.loc.longitude;
+	//var latitude = req.user.loc.latitude;
 	post.auth = req.user._id;
 	post.desp = req.body.desp;
-	post.authLoc = [req.user.loc.longitude, req.user.loc.latitude];
+	post.img = req.body.img;
+	//post.loc = [longitude, latitude];
 	post.authAvatar = req.user.avatar;
 	post.authName = req.user.username;
-	post.locs = {
-		"type": "MultiPoint",
-		"coordinates": [
-			[req.user.loc.longitude, req.user.loc.latitude]
-		]
-	};
+	// post.locs = {
+	// 	type: 'MultiPoint',
+	// 	coordinates: [
+	// 		[longitude, latitude]
+	// 	]
+	// }
 
-	console.log(post);
-
-	new Post(post).save(function(err) {
+	new Post(post).save(function(err, post) {
 		if (err) {
 			next(err);
 		} else {
@@ -167,18 +168,21 @@ exports.updatePost = function(req, res, next) {
 exports.addComment = function(req, res, next) {
 
 	var postId = req.params.id;
+	//var longitude = req.user.loc.longitude;
+	//var latitude = req.user.loc.latitude;
 	var comment = {};
 	comment.userId = req.user._id;
 	comment.userName = req.user.username;
 	comment.userAvatar = req.user.avatar;
-	comment.content = req.body.content;
+	comment.content = req.body.comment.content;
+	comment.img = req.body.comment.img;
 	comment.createAt = Date.now();
 
 	Post.update({
 		_id: postId
 	}, {
 		$push: {
-			comments: comment
+			comments: comment,
 		},
 		$inc: {
 			commentCount: 1
@@ -197,6 +201,8 @@ exports.addComment = function(req, res, next) {
 
 exports.getComments = function(req, res, next) {
 	var postId = req.params.id;
+
+
 	Post.findById(postId, {
 		comments: 1,
 		_id: 0

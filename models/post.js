@@ -6,10 +6,10 @@ var async = require('async');
 
 var postSchema = new Schema({
 	desp: String,
+	img:String,
 	auth: Schema.Types.ObjectId,
 	authAvatar: String,
 	authName: String,
-	authLoc: [],
 	score: {
 		type: Number,
 		default: 0
@@ -30,13 +30,13 @@ var postSchema = new Schema({
 	createAt: {
 		type: Date,
 		default: Date.now
-	},
-	locs: Schema.Types.Mixed
+	}
+
 });
 
-// postSchema.index({
-// 	'locs': '2dsphere'
-// });
+postSchema.index({
+	'locs': '2dsphere'
+});
 
 
 postSchema.statics.getLatest = function(callback) {
@@ -72,11 +72,10 @@ postSchema.statics.getHotest = function(callback) {
 };
 
 postSchema.statics.getNearby = function(callback) {
-	this.find({}, {
-		comments: 0
-	}, {
-		limit: 30
-	}, function(err, posts) {
+
+	this.geoNear([1, 3], {
+		spherical: true
+	}, function(err, results, stats) {
 		if (err) {
 			callback(err);
 		} else {

@@ -24,7 +24,6 @@ exports.addMessage = function(req, res, next) {
 exports.getMessage=function(req,res,next){
 	var userId=req.user._id;
 	Message.find({toId:userId},function(err,messages){
-		console.log(messages);
 		if(err){
 			return next(err);
 		}else{
